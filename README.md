@@ -1,6 +1,10 @@
+By; Ege
+
 # WipeLock for Windows
 
 WipeLock is a small Windows utility that temporarily blocks keyboard and mouse input while a visible countdown is running.
+
+**[Download WipeLock.exe](https://github.com/EgeLanso/WipeLock/releases/download/v0.1.0-beta/WipeLock.exe)** · [Project website](https://egelanso.github.io/WipeLock/)
 
 ## Safety
 
@@ -12,4 +16,3 @@ WipeLock is a small Windows utility that temporarily blocks keyboard and mouse i
 ## Build
 
 The GitHub Actions workflow builds `WipeLock.exe` on Windows and publishes it as a prerelease asset.
-

@@ -1,0 +1,55 @@
+name: Build and publish WipeLock for Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller==6.11.1
+
+      - name: Build EXE
+        run: python -m PyInstaller --clean --noconfirm WipeLock.spec
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WipeLock-Windows
+          path: dist/WipeLock.exe
+          if-no-files-found: error
+
+      - name: Publish public beta release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.0-beta
+          target_commitish: main
+          name: WipeLock v0.1.0 Beta
+          body: |
+            Initial public beta build of WipeLock for Windows.
+
+            **Safety:** The app temporarily suppresses keyboard and mouse input. Emergency unlock: Ctrl + Alt + W. The timer automatically unlocks after the selected duration (maximum five minutes). Test on your own Windows computer before relying on it.
+          prerelease: true
+          make_latest: false
+          files: dist/WipeLock.exe
